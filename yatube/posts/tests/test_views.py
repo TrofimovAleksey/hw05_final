@@ -148,30 +148,25 @@ class PostViewTests(PostBaseTestCase):
         self.assertEqual(follow_after_unfollow_count, 0)
 
     def test_follow_show_by_follower_and_no_by_not_follower(self):
-        """Тест появления новой записи на странице подписчика 
+        """Тест появления новой записи на странице подписчика
         и её отсутствия у тех кто не подписан"""
-        # Создаём авторизованного пользователя, который не будет подписан
         not_follower = User.objects.create_user(username="TimKuk")
         authorized_client_but_not_follower = Client()
         authorized_client_but_not_follower.force_login(not_follower)
-        # подписываем авторизированного пользователя, но не автора
         self.authorized_client_but_not_author.get(
             self.APP_NAME["profile_follow"]
         )
         follow_count = Follow.objects.filter(user=self.not_author).count()
         not_follower_count = Follow.objects.filter(user=not_follower).count()
         self.assertEqual(
-            follow_count, 
+            follow_count,
             1,
         )
         self.assertEqual(not_follower_count, 0)
-        # Создаём новый пост
         Post.objects.create(
             author=self.user,
             text="Тестируем подписку"
         )
-        # проверяем что пост воявился на странице подписчика, но отсутсвует на 
-        # странице пользователя который авторизован, но не подписан
         response_follow = self.authorized_client_but_not_author.get(
             self.APP_NAME["follow"],
         )
@@ -182,11 +177,11 @@ class PostViewTests(PostBaseTestCase):
             self.APP_NAME["follow"],
         )
         self.assertEqual(
-            response_follow.context["page_obj"][0], 
+            response_follow.context["page_obj"][0],
             response_profile.context["page_obj"][0],
         )
         self.assertEqual(
-            len(response_not_follower.context["page_obj"].object_list), 
+            len(response_not_follower.context["page_obj"].object_list),
             0,
         )
 
