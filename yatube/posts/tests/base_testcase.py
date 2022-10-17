@@ -82,6 +82,7 @@ class PostBaseTestCase(TestCase):
             "profile": "posts/profile.html",
             "create_and_edit": "posts/create_post.html",
             "404": "core/404.html",
+            "403": "core/403csrf.html",
         }
         cls.URL_PUBLIC = {
             "index": "/",
