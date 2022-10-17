@@ -142,11 +142,10 @@ class PostViewTests(PostBaseTestCase):
         self.authorized_client_but_not_author.get(
             self.APP_NAME["profile_unfollow"]
         )
-        follow_after_unfollow_count =  Follow.objects.filter(
+        follow_after_unfollow_count = Follow.objects.filter(
             user=self.not_author
         ).count()
         self.assertEqual(follow_after_unfollow_count, 0)
-
 
     def test_follow_show_by_follower_and_no_by_not_follower(self):
         """Тест появления новой записи на странице подписчика 
