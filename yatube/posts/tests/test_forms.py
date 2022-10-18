@@ -101,6 +101,7 @@ class PostCommentTests(PostBaseTestCase):
         comment = Comment.objects.first()
         self.assertEqual(Comment.objects.count(), count_comments + 1)
         self.assertEqual(comment.text, form_data["text"])
+        self.assertEqual(comment.author, self.user)
 
     def test_comment_not_create_if_not_auth_user(self):
         """Комментировать посты может только авторизованный пользователь"""
@@ -112,3 +113,4 @@ class PostCommentTests(PostBaseTestCase):
             follow=True,
         )
         self.assertEqual(Comment.objects.count(), count_comments)
+        self.assertNotIn(form_data["text"], Comment.objects.all())
