@@ -141,6 +141,7 @@ class PostViewTests(PostBaseTestCase):
         self.assertEqual(follow_count, 1)
 
     def test_unfollow(self):
+        """Тест отписки"""
         Follow.objects.create(user=self.not_author, author=self.user)
         self.authorized_client_but_not_author.get(
             self.APP_NAME["profile_unfollow"]
@@ -150,35 +151,29 @@ class PostViewTests(PostBaseTestCase):
         ).count()
         self.assertEqual(follow_after_unfollow_count, 0)
 
-    def test_post_show_
-
-    def test_follow_show_by_follower_and_no_by_not_follower(self):
-        """Тест появления новой записи на странице подписчика
-        и её отсутствия у тех кто не подписан"""
-        not_follower = User.objects.create_user(username="TimKuk")
-        authorized_client_but_not_follower = Client()
-        authorized_client_but_not_follower.force_login(not_follower)
-        self.authorized_client_but_not_author.get(
-            self.APP_NAME["profile_follow"]
-        )
-        follow_count = Follow.objects.filter(user=self.not_author).count()
-        not_follower_count = Follow.objects.filter(user=not_follower).count()
-        self.assertEqual(
-            follow_count,
-            1,
-        )
-        self.assertEqual(not_follower_count, 0)
+    def test_post_appears_on_follower_page(self):
+        """Тест, что у подписанного пользователя появляется пост в ленте"""
+        Follow.objects.create(user=self.not_author, author=self.user)
         Post.objects.create(author=self.user, text="Тестируем подписку")
-        response_follow = self.authorized_client_but_not_author.get(
-            self.APP_NAME["follow"],
-        )
         response_profile = self.client.get(self.APP_NAME["profile"])
-        response_not_follower = authorized_client_but_not_follower.get(
+        response_follow = self.authorized_client_but_not_author.get(
             self.APP_NAME["follow"],
         )
         self.assertEqual(
             response_follow.context["page_obj"][0],
             response_profile.context["page_obj"][0],
+        )
+
+    def test_post_dont_appears_on_unfollower_page(self):
+        """Тест, что у не подписанного поль-ля не появляется пост в ленте"""
+        not_follower = User.objects.create_user(username="TimKuk")
+        authorized_client_but_not_follower = Client()
+        authorized_client_but_not_follower.force_login(not_follower)
+        Follow.objects.create(user=self.not_author, author=self.user)
+        Follow.objects.create(user=not_follower, author=self.not_author)
+        Post.objects.create(author=self.user, text="Тестируем подписку")
+        response_not_follower = authorized_client_but_not_follower.get(
+            self.APP_NAME["follow"],
         )
         self.assertEqual(
             len(response_not_follower.context["page_obj"].object_list),
