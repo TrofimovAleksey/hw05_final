@@ -132,13 +132,16 @@ class PostViewTests(PostBaseTestCase):
             cached_response_content, response_after_clear.content
         )
 
-    def test_follow_and_unfollow(self):
-        """Тест подписки и отписки"""
+    def test_follow(self):
+        """Тест подписки"""
         self.authorized_client_but_not_author.get(
             self.APP_NAME["profile_follow"]
         )
         follow_count = Follow.objects.filter(user=self.not_author).count()
         self.assertEqual(follow_count, 1)
+
+    def test_unfollow(self):
+        Follow.objects.create(user=self.not_author, author=self.user)
         self.authorized_client_but_not_author.get(
             self.APP_NAME["profile_unfollow"]
         )
@@ -146,6 +149,8 @@ class PostViewTests(PostBaseTestCase):
             user=self.not_author
         ).count()
         self.assertEqual(follow_after_unfollow_count, 0)
+
+    def test_post_show_
 
     def test_follow_show_by_follower_and_no_by_not_follower(self):
         """Тест появления новой записи на странице подписчика
@@ -163,16 +168,11 @@ class PostViewTests(PostBaseTestCase):
             1,
         )
         self.assertEqual(not_follower_count, 0)
-        Post.objects.create(
-            author=self.user,
-            text="Тестируем подписку"
-        )
+        Post.objects.create(author=self.user, text="Тестируем подписку")
         response_follow = self.authorized_client_but_not_author.get(
             self.APP_NAME["follow"],
         )
-        response_profile = self.client.get(
-            self.APP_NAME["profile"]
-        )
+        response_profile = self.client.get(self.APP_NAME["profile"])
         response_not_follower = authorized_client_but_not_follower.get(
             self.APP_NAME["follow"],
         )
