@@ -134,22 +134,33 @@ class PostViewTests(PostBaseTestCase):
 
     def test_follow(self):
         """Тест подписки"""
+        count_befor_follow = Follow.objects.all().count()
         self.authorized_client_but_not_author.get(
             self.APP_NAME["profile_follow"]
         )
-        follow_count = Follow.objects.filter(user=self.not_author).count()
-        self.assertEqual(follow_count, 1)
+        count_after_follow = Follow.objects.filter(
+            user=self.not_author
+        ).count()
+        self.assertEqual(count_after_follow, count_befor_follow + 1)
+        follow_info = Follow.objects.last()
+        self.assertEqual(follow_info.user, self.not_author)
+        self.assertEqual(follow_info.author, self.user)
 
     def test_unfollow(self):
         """Тест отписки"""
+        count_befor_follow = Follow.objects.all().count()
         Follow.objects.create(user=self.not_author, author=self.user)
+        count_after_follow = Follow.objects.filter(
+            user=self.not_author
+        ).count()
         self.authorized_client_but_not_author.get(
             self.APP_NAME["profile_unfollow"]
         )
-        follow_after_unfollow_count = Follow.objects.filter(
-            user=self.not_author
+        self.assertEqual(count_befor_follow, count_after_follow - 1)
+        follow_not_in_db = Follow.objects.filter(
+            user=self.not_author, author=self.user
         ).count()
-        self.assertEqual(follow_after_unfollow_count, 0)
+        self.assertEqual(follow_not_in_db, 0)
 
     def test_post_appears_on_follower_page(self):
         """Тест, что у подписанного пользователя появляется пост в ленте"""
