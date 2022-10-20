@@ -12,6 +12,10 @@ class Group(models.Model):
     slug = models.SlugField(unique=True)
     description = models.TextField()
 
+    class Meta:
+        verbose_name = "Группа"
+        verbose_name_plural = "Группы"
+
     def __str__(self):
         return self.title
 
@@ -72,6 +76,10 @@ class Comment(CreatedModel):
         max_length=4049,
     )
 
+    class Meta:
+        verbose_name = "Комментарий"
+        verbose_name_plural = "Комментарии"
+
 
 class Follow(models.Model):
     user = models.ForeignKey(
@@ -86,6 +94,8 @@ class Follow(models.Model):
     )
 
     class Meta:
+        verbose_name = "Подписка"
+        verbose_name_plural = "Подписки"
         constraints = [
             models.UniqueConstraint(
                 fields=["user", "author"],
