@@ -83,6 +83,13 @@ def post_create(request):
 
 
 @login_required
+def delete_post(request, post_id):
+    post_to_delete = get_object_or_404(Post, id=post_id)
+    post_to_delete.delete()
+    return redirect("posts:profile", request.user.username)
+
+
+@login_required
 def post_edit(request, post_id):
     post = get_object_or_404(Post, id=post_id)
     if request.user != post.author:
