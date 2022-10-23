@@ -39,7 +39,7 @@
             <img class="card-img my-2" src="{{ im.url }}">
           {% endthumbnail %}
         {% endif %}
-        <p>{{ post.text }}</p>
+        <p class="text-break">{{ post.text }}</p>
         <a href="{% url 'posts:post_detail' post.id %}">
           подробная информация
         </a>
