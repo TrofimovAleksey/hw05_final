@@ -12,9 +12,9 @@
           </li>
           {% if post.group %}   
             <li class="list-group-item">
-              Группа: {{ post.group.title }}
+              Группа:
               <a href="{% url 'posts:group_list' post.group.slug %}">
-                все записи группы
+                {{ post.group.title }}
               </a>
             </li>
           {% endif %}
@@ -25,7 +25,7 @@
             class="list-group-item d-flex justify-content-between 
             align-items-center"
           >
-            Всего постов автора:  <span >{{ post.author.posts.count }}</span>
+            Всего постов автора: <span>{{ post.author.posts.count }}</span>
           </li>
           <li class="list-group-item">
             <a href="{% url 'posts:profile' post.author.username %}">
@@ -40,7 +40,7 @@
             <img class="card-img my-2" src="{{ im.url }}">
           {% endthumbnail %}
         {% endif %}
-        <p>{{ post.text }}</p>
+        <p class="text-break">{{ post.text }}</p>
         {% if request.user == post.author %}
           <a class="btn btn-primary" href="{% url 'posts:post_edit' post.id %}">
             Редактировать пост
