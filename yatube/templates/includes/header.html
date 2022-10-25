@@ -1,5 +1,5 @@
 {% load static %}
-<nav class="navbar navbar-light" style="background-color: lightskyblue">
+<nav class="navbar navbar-expand-md navbar-light" style="background-color: lightskyblue">
   <div class="container">
     <a class="navbar-brand" href="{% url 'posts:index' %}">
       <img src="{% static 'img/logo.png' %}" width="30" height="30" 
@@ -7,21 +7,25 @@
       >
       <span style="color:red">Ya</span>tube
     </a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarTogglerDemo02" aria-controls="navbarTogglerDemo02" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
     {% with request.resolver_match.view_name as view_name %}
-      <ul class="nav nav-pills">
+    <div class="collapse navbar-collapse" id="navbarTogglerDemo02">
+      <ul class="nav-pills navbar-nav ms-auto">
         <li class="nav-item"> 
-          <a class="nav-link {% if view_name  == 'about:author' %}active
+          <a class="nav-link link-dark {% if view_name  == 'about:author' %}active
           {% endif %}" href="{% url 'about:author' %}"
           >Об авторе</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link {% if view_name  == 'about:tech' %}active
+          <a class="nav-link link-dark {% if view_name  == 'about:tech' %}active
           {% endif %}" href="{% url 'about:tech' %}"
           >Технологии</a>
         </li>
         {% if user.is_authenticated %}
           <li class="nav-item"> 
-            <a class="nav-link {% if view_name  == 'posts:post_create' %}active
+            <a class="nav-link link-dark {% if view_name  == 'posts:post_create' %}active
             {% endif %}"href="{% url 'posts:post_create' %}"
             >Новая запись</a>
           </li>
@@ -50,6 +54,7 @@
           </li>
         {% endif %}
       </ul>
+    </div>
     {% endwith %}
   </div>
 </nav>
