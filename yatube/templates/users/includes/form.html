@@ -1,7 +1,7 @@
 <div class="card-body">
   {% load user_filters %} {# Загружаем фильтры #}
   {% if form.errors %}
-    {% for field in form %} 
+    {% for field in form %}
       {% for error in field.errors %}
         <div class="alert alert-danger">
           {{ error|escape }}
@@ -19,7 +19,7 @@
     {% csrf_token %}
 
     {# Выводим поля в цикле, по отдельности #}
-    {% for field in form %} 
+    {% for field in form %}
       <div class="form-group row my-3 p-3">
         <label for="{{ field.id_for_label }}">
           {{ field.label }}
@@ -28,9 +28,9 @@
             {% endif %}
         </label>
         {# К полю ввода добавляем атрибут class #}
-        {{ field|addclass:'form-control' }} 
+        {{ field|addclass:'form-control' }}
           {% if field.help_text %}
-            <small 
+            <small
                 id="{{ field.id_for_label }}-help"
                 class="form-text text-muted"
             >
@@ -49,6 +49,22 @@
           Забыли пароль?
         </a>
       {% endif %}
+      <!-- если использована неправильная ссылка -->
+      {% comment %} {% if request.path == '/auth/password_reset/confirm/' and  %}
+        <div class="row justify-content-center">
+          <div class="col-md-8 p-5">
+            <div class="card">
+              <div class="card-header">
+                Ошибка
+              </div>
+              <div class="card-body">
+                <p>Ссылка сброса пароля содержит ошибку или устарела.</p>
+              </div> <!-- card body -->
+            </div> <!-- card -->
+          </div> <!-- col -->
+        </div> <!-- row -->
+      {% endif %} {% endcomment %}
+      <!-- конец если использована неправильная ссылка -->
     </div>
   </form>
 </div> <!-- card body -->
