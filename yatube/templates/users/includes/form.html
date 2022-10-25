@@ -49,22 +49,7 @@
           Забыли пароль?
         </a>
       {% endif %}
-      <!-- если использована неправильная ссылка -->
-      {% comment %} {% if request.path == '/auth/password_reset/confirm/' and  %}
-        <div class="row justify-content-center">
-          <div class="col-md-8 p-5">
-            <div class="card">
-              <div class="card-header">
-                Ошибка
-              </div>
-              <div class="card-body">
-                <p>Ссылка сброса пароля содержит ошибку или устарела.</p>
-              </div> <!-- card body -->
-            </div> <!-- card -->
-          </div> <!-- col -->
-        </div> <!-- row -->
-      {% endif %} {% endcomment %}
-      <!-- конец если использована неправильная ссылка -->
+      
     </div>
   </form>
 </div> <!-- card body -->
