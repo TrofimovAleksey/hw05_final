@@ -16,7 +16,7 @@ def pagination_function(request, object):
     return result
 
 
-@cache_page(20, key_prefix="index_page")
+@cache_page(settings.TIME_OF_CACHE, key_prefix="index_page")
 def index(request):
     post_list = Post.objects.all()
     page_obj = pagination_function(request, post_list)
