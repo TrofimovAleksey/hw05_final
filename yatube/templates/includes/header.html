@@ -1,5 +1,5 @@
 {% load static %}
-<nav class="navbar navbar-expand-md navbar-light" style="background-color: lightskyblue">
+<nav class="navbar navbar-expand-lg navbar-light" style="background-color: lightskyblue">
   <div class="container">
     <a class="navbar-brand" href="{% url 'posts:index' %}">
       <img src="{% static 'img/logo.png' %}" width="30" height="30"
@@ -60,7 +60,10 @@
             >Выйти</a>
           </li>
           <li class="nav-item">
-            <dev class="nav-link link-dark">Пользователь: {{ user.username }}</dev>
+            <a class="nav-link link-dark"
+              href="{% url 'posts:profile' user.username %}"
+            >Мои посты</a>
+            {% comment %} <a class="nav-link link-dark">Пользователь: {{ user.username }}</dev> {% endcomment %}
           </li>
         {% else %}
           <li class="nav-item">
