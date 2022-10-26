@@ -42,11 +42,14 @@ INSTALLED_APPS = [
     "django.contrib.contenttypes",
     "django.contrib.sessions",
     "django.contrib.messages",
+    # Приложение необходимо для работы приложения DjDT
     "django.contrib.staticfiles",
     "users.apps.UsersConfig",
     "core.apps.CoreConfig",
     "about.apps.AboutConfig",
     "sorl.thumbnail",
+    # Приложение необходимо для работы приложения DjDT
+    "debug_toolbar",
 ]
 
 MIDDLEWARE = [
@@ -57,6 +60,13 @@ MIDDLEWARE = [
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
+    # Добавьте новое приложения для обработки запросов DjDT
+    "debug_toolbar.middleware.DebugToolbarMiddleware",
+]
+
+# Добавьте IP адреса, при обращении с которых будет доступен DjDT
+INTERNAL_IPS = [
+    "127.0.0.1",
 ]
 
 ROOT_URLCONF = "yatube.urls"
